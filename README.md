@@ -31,18 +31,35 @@
 
 本技能严格遵循开放标准（Open Agent Skills Standard），可无缝安装于国内外主流 AI Coding Agent 中。
 
-### 一键自适应安装（推荐）
-在工作区根目录下直接运行通用安装器：
+### 方式 1：业界通用技能包管理器（推荐）
+使用 `skills.sh` 开放标准 CLI 直接安装：
 ```bash
-# 安装到当前项目（推荐软链接模式，同步保持最新）：
-py ../install_skills.py --target .
+# 通用自适应安装至当前工程检测到的 Agent 目录
+npx skills add ./idea-to-system-blueprint
+
+# 或显式指定目标 Agent (支持 claude-code, cursor, opencode, codex 等)
+npx skills add ./idea-to-system-blueprint -a claude-code
 ```
 
-> 🤖 **给 AI Agent 的安装自省指引**：
-> 当用户指示安装本技能时：
-> 1. 探测目标工程根目录中存在的 Agent 标识目录（优先级：`.zcode` > `.workbuddy` > `.dsh` > `.claude` > `.cursor` > `.windsurf` > `.opencode` > `.gemini`）；
-> 2. 将本技能目录创建软链接（Windows `mklink /D`，Linux/macOS `ln -s`）或复制至对应的 `<Agent目录>/skills/idea-to-system-blueprint/`；
-> 3. 若未检测到特定 Agent 标记，默认安装至通用中立规范目录 `<项目根目录>/.agents/skills/idea-to-system-blueprint/`。
+### 方式 2：对当前使用的 AI Agent 直接下发指令（AI 一键自装）
+在目标项目中打开您的 AI 对话框，直接发送以下指令：
+> “请帮我把 `e:\WorkSpace\SkillWorkSpace\idea-to-system-blueprint` 技能安装到当前工程的对应 Agent 技能目录中（如果是 ZCode 写入 `.zcode/skills/`，WorkBuddy 写入 `.workbuddy/skills/`，Claude Code 写入 `.claude/skills/`，未识别则统一写入通用开放标准 `.agents/skills/`）。”
+
+### 方式 3：Git Submodule / 软链接 / 复制
+直接将本目录软链接或复制至目标工程对应目录即可立即生效：
+```bash
+# 通用开放标准（兼容 Cursor, OpenCode, Codex, Antigravity 等）
+mkdir -p .agents/skills
+cp -r /path/to/idea-to-system-blueprint .agents/skills/
+
+# Claude Code
+mkdir -p .claude/skills
+cp -r /path/to/idea-to-system-blueprint .claude/skills/
+
+# ZCode (ADE)
+mkdir -p .zcode/skills
+cp -r /path/to/idea-to-system-blueprint .zcode/skills/
+```
 
 ### 主流 Agent 扫描路径对照表
 
@@ -58,3 +75,4 @@ py ../install_skills.py --target .
 | **Windsurf** (Codeium) | `<项目>/.windsurf/skills/idea-to-system-blueprint/` | `~/.codeium/windsurf/skills/idea-to-system-blueprint/` |
 | **Google Antigravity (AGY)** | `<项目>/.gemini/skills/idea-to-system-blueprint/` | `~/.gemini/antigravity/skills/idea-to-system-blueprint/` |
 | **开放标准规范 (Universal)** | `<项目>/.agents/skills/idea-to-system-blueprint/` | `~/.agents/skills/idea-to-system-blueprint/` |
+
